@@ -250,11 +250,12 @@ splits {
     }
 
     applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            String filenameSuffix = variant.flavorName == "mono" ? variant.name : variant.buildType.name
-            output.outputFileName = "android_${filenameSuffix}.apk"
-        }
+    variant.outputs.all { output ->
+        def buildTypeName = variant.buildType.name
+        def flavorName = variant.flavorName ?: "noflavor"
+        output.outputFileName = "android_${flavorName}_${buildTypeName}.apk"
     }
+}
 }
 
 task copyAndRenameBinary(type: Copy) {
