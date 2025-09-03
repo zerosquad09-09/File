@@ -34,6 +34,10 @@ configurations {
 }
 
 dependencies {
+    implementation "com.google.ads.mediation:adcolony:4.8.0.2"
+    implementation "com.google.ads.mediation:facebook:6.14.0.0"
+    implementation "com.google.ads.mediation:vungle:6.12.1.1"
+    implementation "com.google.android.gms:play-services-ads:23.3.0"
     implementation "androidx.fragment:fragment:$versions.fragmentVersion"
     implementation "androidx.core:core-splashscreen:$versions.splashscreenVersion"
 
@@ -114,7 +118,7 @@ android {
         applicationId getExportPackageName()
         versionCode getExportVersionCode()
         versionName getExportVersionName()
-        minSdkVersion getExportMinSdkVersion()
+        minSdkVersion Math.max(24, getExportMinSdkVersion())
         targetSdkVersion getExportTargetSdkVersion()
 
         missingDimensionStrategy 'products', 'template'
