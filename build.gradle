@@ -100,10 +100,10 @@ android {
             ignoreAssetsPattern "!.svn:!.git:!.gitignore:!.ds_store:!*.scc:<dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"
         }
 
-        ndk {
-            String[] export_abi_list = getExportEnabledABIs()
-            abiFilters export_abi_list
-        }
+        //ndk {
+           // String[] export_abi_list = //getExportEnabledABIs()
+          // abiFilters export_abi_list
+        //}
 
         manifestPlaceholders = [
             godotEditorVersion: getGodotEditorVersion(),
