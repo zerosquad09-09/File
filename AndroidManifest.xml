@@ -38,6 +38,11 @@
             android:name="org.godotengine.rendering.method"
             android:value="${godotRenderingMethod}"/>
 
+        <!-- App ID AdMob (gunakan test ID ini saat pengembangan) -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
+
         <activity
             android:name=".GodotApp"
             android:label="@string/godot_project_name_string"
