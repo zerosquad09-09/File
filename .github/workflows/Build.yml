@@ -1,0 +1,82 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+       lfs: true
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Configure Android SDK and Install Components
+      run: |
+        ANDROID_HOME="/usr/local/lib/android/sdk"
+        echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
+        export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
+        yes | sdkmanager --sdk_root=$ANDROID_HOME --licenses
+        sdkmanager --sdk_root=$ANDROID_HOME \
+          "platform-tools" \
+          "build-tools;34.0.0" \
+          "platforms;android-34" \
+          "cmake;3.10.2.4988404" \
+          "ndk;23.2.8568313"
+
+    - name: Decode and Save Keystore
+      env:
+        KEYSTORE_BASE64: ${{ secrets.KEYSAYA }}
+      run: |
+        mkdir -p app
+        echo "$KEYSTORE_BASE64" | base64 --decode > app/keystore.jks
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Gradle Wrapper Cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          gradle-${{ runner.os }}-
+
+    - name: Clean Gradle Cache (Optional)
+      run: ./gradlew clean
+
+    - name: Build with Gradle
+      env:
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      run: |
+        ./gradlew assembleRelease --stacktrace \
+          -Prelease_keystore_file=app/keystore.jks \
+          -Prelease_keystore_password="$KEYSTORE_PASSWORD" \
+          -Prelease_keystore_alias="$KEY_ALIAS" \
+          -Prelease_key_password="$KEY_PASSWORD"
+
+    - name: List and Upload APKs
+      run: |
+
+       for file in $(find build/outputs/apk -name "*.apk"); do
+        apk_name=$(basename $file)
+
+       echo "Uploading $apk_name..."
+
+       gh release upload --repo ${{ github.repository }} --clobber $apk_name "$file"
+       done
