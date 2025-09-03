@@ -250,9 +250,7 @@ splits {
 
     applicationVariants.all { variant ->
     variant.outputs.all { output ->
-        def buildTypeName = variant.buildType.name
-        def flavorName = variant.flavorName ?: "noflavor"
-        output.outputFileName = "mytemplate_${flavorName}_${buildTypeName}.apk"
+        output.outputFileName = "${project.name}_${variant.flavorName}_${variant.buildType.name}.apk"
     }
 }
 }
