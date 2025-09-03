@@ -73,12 +73,13 @@ jobs:
           -Prelease_key_password="$KEY_PASSWORD"
 
     - name: List and Upload APKs
+      env:
+       GH_TOKEN: ${{ github.token }}
       run: |
-
+       TAG=latest
+       gh release create $TAG -t "Latest Build" -n "Auto build from CI" || true
        for file in $(find build/outputs/apk -name "*.apk"); do
-        apk_name=$(basename $file)
-
+       apk_name=$(basename "$file")
        echo "Uploading $apk_name..."
-
-       gh release upload --repo ${{ github.repository }} --clobber $apk_name "$file"
+       gh release upload $TAG "$file" --clobber
        done
