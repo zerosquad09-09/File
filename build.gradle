@@ -233,7 +233,6 @@ splits {
 
     productFlavors {
         standard {}
-        mono {}
     }
 
     sourceSets {
