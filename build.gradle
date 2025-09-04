@@ -207,14 +207,10 @@ android {
         }
 
         release {
-    zipAlignEnabled shouldZipAlign()
-    if (shouldSign()) {
-        signingConfig signingConfigs.release
-    } else {
-        signingConfig null
-    }
-    minifyEnabled true
-    shrinkResources true
+    zipAlignEnabled true
+    signingConfig null   // biar unsigned (nanti bisa di-sign manual)
+    minifyEnabled false  // jangan dipangkas class
+    shrinkResources false // jangan dipangkas resource
     proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 }
 }
@@ -223,7 +219,7 @@ splits {
     abi {
         enable true
         reset()
-        include 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        include 'armeabi-v7a', 'arm64-v8a'
         universalApk false
     }
 
