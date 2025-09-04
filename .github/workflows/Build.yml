@@ -1,3 +1,5 @@
+permissions:
+  contents: write
 name: Android CI
 
 on:
@@ -72,14 +74,20 @@ jobs:
           -Prelease_keystore_alias="$KEY_ALIAS" \
           -Prelease_key_password="$KEY_PASSWORD"
 
-    - name: List and Upload APKs
+    - name: Upload APKs to GitHub Release
       env:
        GH_TOKEN: ${{ github.token }}
       run: |
        TAG=latest
-       gh release create $TAG -t "Latest Build" -n "Auto build from CI" || true
-       for file in $(find build/outputs/apk -name "*.apk"); do
-       apk_name=$(basename "$file")
-       echo "Uploading $apk_name..."
-       gh release upload $TAG "$file" --clobber
-       done
+        # Buat release jika belum ada
+         gh release create $TAG \
+        --title "Latest Build" \
+        --notes "Auto build from CI" \
+        --repo ${{ github.repository }} || true
+
+         # Upload semua APK
+         for file in $(find build/outputs/apk -name "*.apk"); do
+         apk_name=$(basename "$file")
+         echo "Uploading $apk_name..."
+         gh release upload $TAG "$file" --repo ${{ github.repository }} --clobber
+         done
