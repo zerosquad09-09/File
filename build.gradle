@@ -250,9 +250,14 @@ splits {
 
     applicationVariants.all { variant ->
     variant.outputs.all { output ->
-        output.outputFileName = "${project.name}_${variant.flavorName}_${variant.buildType.name}.apk"
+        def abi = output.getFilter(com.android.build.OutputFile.ABI)
+        if (abi != null) {
+            output.outputFileName = "${project.name}_${variant.flavorName}_${abi}_${variant.buildType.name}.apk"
+        } else {
+            // untuk universal atau build tanpa split
+            output.outputFileName = "${project.name}_${variant.flavorName}_${variant.buildType.name}.apk"
+        }
     }
-}
 }
 
 task copyAndRenameBinary(type: Copy) {
