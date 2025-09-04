@@ -68,7 +68,7 @@ jobs:
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       run: |
-        ./gradlew assembleRelease --stacktrace \
+        ./gradlew assembleStandardRelease --stacktrace \
           -Prelease_keystore_file=app/keystore.jks \
           -Prelease_keystore_password="$KEYSTORE_PASSWORD" \
           -Prelease_keystore_alias="$KEY_ALIAS" \
