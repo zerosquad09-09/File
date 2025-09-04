@@ -259,7 +259,7 @@ splits {
         }
     }
 }
-
+}
 task copyAndRenameBinary(type: Copy) {
     // The 'doNotTrackState' is added to disable gradle's up-to-date checks for output files
     // and directories. Otherwise this check may cause permissions access failures on Windows
