@@ -41,7 +41,7 @@
         <!-- App ID AdMob (gunakan test ID ini saat pengembangan) -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-3282018691015130~6654155527"/>
 
         <activity
             android:name=".GodotApp"
