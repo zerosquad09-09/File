@@ -1,67 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="1"
-    android:versionName="1.0"
-    android:installLocation="auto" >
-
-    <supports-screens
-        android:smallScreens="true"
-        android:normalScreens="true"
-        android:largeScreens="true"
-        android:xlargeScreens="true" />
-
-    <uses-feature
-        android:glEsVersion="0x00030000"
-        android:required="true" />
-
-    <application
-        android:label="@string/godot_project_name_string"
-        android:allowBackup="false"
-        android:icon="@mipmap/icon"
-        android:appCategory="game"
-        android:isGame="true"
-        android:hasFragileUserData="false"
-        android:requestLegacyExternalStorage="false"
-        tools:ignore="GoogleAppIndexingWarning" >
-        <profileable
-            android:shell="true"
-            android:enabled="true"
-            tools:targetApi="29" />
-
-        <!-- Records the version of the Godot editor used for building -->
-        <meta-data
-            android:name="org.godotengine.editor.version"
-            android:value="${godotEditorVersion}" />
-        <!-- Records the rendering method used by the Godot engine -->
-        <meta-data
-            android:name="org.godotengine.rendering.method"
-            android:value="${godotRenderingMethod}"/>
-
-        <!-- App ID AdMob (gunakan test ID ini saat pengembangan) -->
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3282018691015130~4092946144"/>
-
-        <activity
-            android:name=".GodotApp"
-            android:label="@string/godot_project_name_string"
-            android:theme="@style/GodotAppSplashTheme"
-            android:launchMode="singleInstancePerTask"
-            android:excludeFromRecents="false"
-            android:exported="true"
-            android:screenOrientation="landscape"
-            android:configChanges="layoutDirection|locale|orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
-            android:resizeableActivity="false"
-            tools:ignore="UnusedAttribute" >
-
+<?xml version="1.0" encoding="utf-8" standalone="no"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="34" android:compileSdkVersionCodename="14" android:installLocation="auto" package="com.godot.game" platformBuildVersionCode="34" platformBuildVersionName="14">
+    <supports-screens android:largeScreens="true" android:normalScreens="true" android:smallScreens="true" android:xlargeScreens="true"/>
+    <uses-feature android:glEsVersion="0x00030000" android:required="true"/>
+    <application android:allowBackup="false" android:appCategory="game" android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:extractNativeLibs="true" android:hasFragileUserData="false" android:icon="@mipmap/icon" android:isGame="true" android:label="@string/godot_project_name_string" android:requestLegacyExternalStorage="false">
+        <profileable android:enabled="true" android:shell="true"/>
+        <meta-data android:name="org.godotengine.editor.version" android:value="4.4.1.stable"/>
+        <meta-data android:name="org.godotengine.rendering.method" android:value=""/>
+        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3282018691015130~4092946144"/>
+        <activity android:configChanges="density|keyboard|keyboardHidden|layoutDirection|locale|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode" android:excludeFromRecents="false" android:exported="true" android:label="@string/godot_project_name_string" android:launchMode="singleInstancePerTask" android:name="com.godot.game.GodotApp" android:resizeableActivity="false" android:screenOrientation="landscape" android:theme="@style/GodotAppSplashTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
+        <meta-data android:name="org.godotengine.library.version" android:value="4.4.1.stable"/>
+        <service android:name="org.godotengine.godot.GodotDownloaderService"/>
+        <activity android:exported="false" android:name="org.godotengine.godot.utils.ProcessPhoenix" android:process=":phoenix" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <provider android:authorities="com.godot.game.fileprovider" android:exported="false" android:grantUriPermissions="true" android:name="androidx.core.content.FileProvider">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/godot_provider_paths"/>
+        </provider>
+        <provider android:authorities="com.godot.game.androidx-startup" android:exported="false" android:name="androidx.startup.InitializationProvider">
+            <meta-data android:name="androidx.profileinstaller.ProfileInstallerInitializer" android:value="androidx.startup"/>
+        </provider>
+        <receiver android:directBootAware="false" android:enabled="true" android:exported="true" android:name="androidx.profileinstaller.ProfileInstallReceiver" android:permission="android.permission.DUMP">
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SKIP_FILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION"/>
+            </intent-filter>
+        </receiver>
     </application>
-
 </manifest>
